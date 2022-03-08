@@ -16,6 +16,9 @@ stocks_csv_data = CSV.parse(
 )
 stocks_data = {}
 
+total_sell = 0
+total_buy = 0
+
 stocks_csv_data.each do |stock|
   next unless stock["Header"] == "Data"
 
@@ -33,13 +36,19 @@ stocks_csv_data.each do |stock|
     stocks_data[stock["Symbol"]][:income] += (
       stocks_data[stock["Symbol"]][:sold_price_pln] - stocks_data[stock["Symbol"]][:buy_price_pln]
     )
+    total_sell += stocks_data[stock["Symbol"]][:sold_price_pln]
+    total_buy += stocks_data[stock["Symbol"]][:buy_price_pln]
   else # buying
     stocks_data[stock["Symbol"]][:buy_price_pln] = stock["Proceeds"].to_f.abs * usd_rate
   end
 end
 
 # puts JSON.pretty_generate(stocks_data)
-puts "Total to pay for stocks (in PLN): #{stocks_data.sum { |k,v| stocks_data[k][:income] * 0.19 }}"
+puts "Total to pay for stocks (in PLN) -- Income earned abroad (item 32 in PIT-ZG): #{stocks_data.sum { |k,v| stocks_data[k][:income] * 0.19 }}"
+
+puts "Income earned abroad (item 32 in PIT-ZG): #{stocks_data.sum { |k,v| stocks_data[k][:income] }}"
+puts "Revenue (item 22 in PIT-38): #{total_sell}"
+puts "Tax deductible expenses (item 23 in PIT-38): #{total_buy}"
 
 # dividends:
 
@@ -66,3 +75,6 @@ withholding_dividends_csv_data.each do |div|
 end
 
 puts "Total to pay for dividends (in PLN): #{dividends_income_total_pln * 0.19 - withholding_dividends_total_pln }"
+
+puts "Lump-sum tax calculated on revenue referred to in Article 30a(1)(1) - (5) of the Act (item 45 in PIT-38): #{dividends_income_total_pln * 0.19}"
+puts "Tax paid abroad, referred to in Article 30a(9) of the Act (item 46 in PIT-38): #{withholding_dividends_total_pln}"
