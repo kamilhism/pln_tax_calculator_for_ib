@@ -11,11 +11,12 @@
 
 ! This script is just PoC and works only in very basic cases when you buy N amount of stocks and then you sell the same N amount. So keep this info in mind and use it on your risk. Better to check all numbers manually afterwards
 
+
+#### Using podatki.gov.pl
+
 ```
 "Your income" ->
 "edit income (revenue, expenses, tax)" ->
-
-1. Using podatki gov pl:
 
 "Other revenue, including revenue earned abroad and revenue from sale of virtual currencies – Article 30B(1A) of the Act" ->
 "Revenue (item 22 in PIT-38)" -- "full buy price" ->
