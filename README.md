@@ -15,6 +15,8 @@
 "Your income" ->
 "edit income (revenue, expenses, tax)" ->
 
+1. Using podatki gov pl:
+
 "Other revenue, including revenue earned abroad and revenue from sale of virtual currencies – Article 30B(1A) of the Act" ->
 "Revenue (item 22 in PIT-38)" -- "full buy price" ->
 "Tax deductible expenses (item 23 in PIT-38)" -- "full sell price" ->
