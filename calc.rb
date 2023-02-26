@@ -1,7 +1,18 @@
 require "csv"
-require "exchange_rates_nbp"
+require "open-uri"
 require "json"
 require "enumerator"
+require "pry"
+
+class ExchangeRatesNBP
+  def self.exchange_rate(date, currency_code)
+    url = "http://api.nbp.pl/api/exchangerates/rates/a/#{currency_code}/#{date}?format=json"
+    response = JSON.parse(URI.open(url).read)
+    response["rates"].first["mid"]
+  rescue OpenURI::HTTPError => error
+    exchange_rate(date - 1, currency_code)
+  end
+end
 
 file = File.open("data.csv").read
 
@@ -43,7 +54,7 @@ stocks_csv_data.each do |stock|
   end
 end
 
-# puts JSON.pretty_generate(stocks_data)
+puts JSON.pretty_generate(stocks_data)
 puts "Total to pay for stocks (in PLN) -- Income earned abroad (item 32 in PIT-ZG): #{stocks_data.sum { |k,v| stocks_data[k][:income] * 0.19 }}"
 
 puts "Income earned abroad (item 32 in PIT-ZG): #{stocks_data.sum { |k,v| stocks_data[k][:income] }}"
